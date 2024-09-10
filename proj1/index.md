@@ -4,9 +4,9 @@
 
 ### Single-scale Version (for Small Images)
 
-I use the L2 norm metric and search over a window of [-15, 15] to align the G and R channels to the B channel. Also, I crop the image by 10% on each side for better alignment.
+I use the L2 norm metric and search over a window of [-15, 15] to align the G and R channels to the B channel. Also, I crop the image by 10% on each side at the begining for better alignment.
 
-Below are the results for all `.jpg` images.
+Below are the results for all `.jpg` images:
 
 <table>
   <tr>
@@ -29,7 +29,7 @@ Below are the results for all `.jpg` images.
 
 I continue using the L2 norm metric and add a coarse-to-fine pyramid to speed up processing for large images like `.tif` images.
 
-Below are the results for all images.
+Below are the results for all images:
 
 <table>
   <tr>
