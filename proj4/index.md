@@ -51,7 +51,7 @@ To warp the images using the computed homography H, I used inverse warping. Firs
 
 ## Part 4: Image Rectification
 
-Using the four corner points of an object, I can perform perform image rectification now. 
+Using the four corner points of an object, I can perform image rectification now. 
 
 ### Results
 
