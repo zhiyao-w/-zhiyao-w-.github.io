@@ -9,124 +9,83 @@ The project explores various aspects of image warping, including homography comp
 Here is the picture I shoot and used in this project:
 </p>
 <p align="center">
-  <img src="1b.jpg" alt="Smiling" width="20%" />
-  <img src="11b.jpg" alt="Smiling" width="20%" />
-  <img src="43b.jpg" alt="Smiling" width="20%" />
+  <img src="image1.jpeg" alt="Smiling" width="20%" />
+  <img src="image2.jpeg" alt="Smiling" width="20%" />
+  <img src="image3.jpeg" alt="Smiling" width="20%" />
+  <img src="image4.jpeg" alt="Smiling" width="20%" />
 </p>
+</p>
+<p align="center">
+  <img src="image5.jpeg" alt="Smiling" width="20%" />
+  <img src="image6.jpeg" alt="Smiling" width="20%" />
+  <img src="image7.jpeg" alt="Smiling" width="20%" />
+  <img src="image8.jpeg" alt="Smiling" width="20%" />
+</p>
+
 
 
 ---
 
 ## Part 2: Recovering Homographies
 
-### Objective
-To align multiple images into a single mosaic, it is crucial to determine the homographic transformations between them. A homography maps points from one image to another, enabling the warping and alignment necessary for seamless mosaicing.
+To align multiple images into a single mosaic, it is crucial to determine the homographic transformations between them. A homography maps points from one image to another, enabling the warping and alignment necessary for mosaicing.
 
 ### Theory
-A homography relates the coordinates of corresponding points between two images through a 3x3 matrix **H**:
-
-\[
-\mathbf{q} = \mathbf{H} \mathbf{p}
-\]
-
-where:
-- \(\mathbf{q}\) and \(\mathbf{p}\) are points in homogeneous coordinates.
-- **H** is the homography matrix with 8 degrees of freedom (the last element is typically set to 1 for normalization).
-
-Expanding the equation, we obtain a system of linear equations that can be solved to determine the elements of **H**. With more than four point correspondences, the system becomes overdetermined, and least-squares methods can be employed to find an optimal solution.
-
-### Method
-- **Point Correspondences**: Identified corresponding points between image pairs using a mouse-clicking interface. Ensured high accuracy in point selection to maintain stability in homography recovery.
-- **Linear System Setup**: Formulated a linear system based on the homography equations derived from the point correspondences. Each pair of points contributes two equations to the system.
-- **Least-Squares Solution**: Solved the overdetermined system using least-squares optimization to obtain the homography matrix **H**. Normalized the matrix by setting the last element to 1 to maintain scale consistency.
-
-### Results
-Successfully recovered homography matrices that accurately align key points between image pairs. This alignment facilitates precise image warping in the next stages of the project.
+</p>
+<p align="center">
+  <img src="9.png" alt="formula" width="70%" />
+</p>
+</p>
+<p align="center">
+  <img src="10.png" alt="formula" width="70%" />
+</p>
+For this system to not be underdetermined, we require at least 4 correspondences between the two images. Then we can solve for an approximate solution given an overconstrained system using least squares.
 
 ---
 
 ## Part 3: Warping the Images
 
-### Objective
-To align images based on the computed homographies, enabling their integration into a cohesive mosaic. This involves transforming each image's perspective to match a reference frame.
+To warp the images using the computed homography H, I used inverse warping. First, I transformed the four corners of the input image using H to determine the bounding box dimensions for the warped image. Then, I generated a grid of output coordinates within this bounding box and mapped these coordinates back to the input image using the inverse homography (H_inv). I tried to use scipy.interpolate.griddata first but it takes too long to process since my images are quite big. So I applied linear interpolation using the map_coordinates function from scipy.ndimage by looping over color channel.
 
-### Method
-- **Inverse Warping**: Mapped coordinates from the output image back to the input image using the inverse of the homography matrix. This approach ensures that each pixel in the output image corresponds to a valid location in the input image.
-- **Interpolation**: Applied linear interpolation to resample pixel values, ensuring smooth transitions and avoiding aliasing artifacts. Utilized efficient interpolation techniques to handle multiple color channels.
-- **Bounding Box Calculation**: Determined the size of the warped image by transforming the original image's corners and computing the resulting bounding box. This step ensures that the entire warped image fits within the output canvas.
-- **Vectorization**: Implemented the warping process without explicit loops, leveraging vectorized operations for computational efficiency.
+---
+
+## Part 4: Image Rectification
+
+Using the four corner points of an object, I can perform perform image rectification now. 
 
 ### Results
-Produced rectified images by transforming the perspectives of the original images. The rectified images demonstrate accurate alignment and preservation of structural details, validating the effectiveness of the homography and warping processes.
 
-![Original Image](original_image.png)
-*Original Image*
+![Rectification](1.png)
 
-![Rectified Image](rectified_image.png)
-*Rectified Image*
+![Rectification](2.png)
 
 ---
 
-## Part 4: Blending Images into a Mosaic
+## Part 5: Blend the images into a mosaic
 
-### Objective
-To seamlessly combine multiple warped images into a single mosaic, ensuring smooth transitions and minimizing visible seams.
-
-### Method
-- **Alignment**: Utilized the computed homographies to align all images to a common reference frame. This alignment ensures that overlapping regions correspond accurately between images.
-- **Blending**: Applied alpha blending techniques to merge overlapping regions. By adjusting the transparency of overlapping pixels, the blending process reduces visible seams and creates a cohesive appearance.
-- **Compositing**: Stacked the aligned images onto a unified canvas, carefully handling spatial relationships and overlaps. Managed image boundaries to maintain integrity and avoid ghosting effects.
+I blended the images into a mosaic using a one-shot warping procedure. I leave image 1 unwarped and wraped image 2 into its projection using the homography matrix H which computed between corresponding points in image 1 and image 2. First, I determined the size of the final mosaic by transforming the corners of both images and calculating the necessary offsets to accommodate the warped images within the bounding box. I also created an alpha mask that starts with a value of 1 at the center of each image and falls off linearly to 0 at the edges to blend the two images together.
 
 ### Results
-Created three distinct mosaics by blending different sets of images. Each mosaic showcases seamless integration of the source images, with smooth transitions and minimal artifacts, demonstrating the effectiveness of the homography computation and blending techniques.
 
-![Mosaic 1](mosaic1.png)
-*Mosaic Example 1*
+set 1:
+</p>
+<p align="center">
+  <img src="3.png" alt="mosaic" width="60%" />
+  <img src="4.png" alt="mosaic" width="60%" />
+</p>
 
-![Mosaic 2](mosaic2.png)
-*Mosaic Example 2*
+set 2:
+</p>
+<p align="center">
+  <img src="5.png" alt="mosaic" width="60%" />
+  <img src="6.png" alt="mosaic" width="60%" />
+</p>
 
-![Mosaic 3](mosaic3.png)
-*Mosaic Example 3*
+set 3:
+</p>
+<p align="center">
+  <img src="7.png" alt="mosaic" width="60%" />
+  <img src="8.png" alt="mosaic" width="25%" />
+</p>
 
----
-
-## Optional: Bells and Whistles
-
-### Objective
-Enhance the basic mosaicing functionality with additional features that improve the quality and aesthetics of the final mosaic.
-
-### Enhancements
-- **Seam Optimization**: Implemented seam finding algorithms to identify optimal paths for blending, minimizing visible transitions between images.
-- **Multi-band Blending**: Applied multi-band blending techniques to handle different frequency components of the images, resulting in more natural and artifact-free merges.
-- **Interactive Interface**: Developed an interactive user interface for selecting point correspondences, streamlining the homography computation process and improving user experience.
-
-### Results
-Enhanced the mosaicing process with optimized seams and multi-band blending, resulting in higher-quality mosaics with fewer visible artifacts. The interactive interface facilitated easier point selection, making the homography computation more efficient and user-friendly.
-
-![Enhanced Mosaic](enhanced_mosaic.png)
-*Enhanced Mosaic Example*
-
----
-
-## Submission
-
-All project components, including the code, images, and documentation, have been compiled and are ready for submission. The repository includes:
-
-- **Source Code**: Python scripts for homography computation, image warping, and blending.
-- **Captured Images**: Original and processed images used for creating the mosaics.
-- **Results**: Final mosaics and intermediate outputs demonstrating each project's stage.
-- **Documentation**: This portfolio detailing the methods, implementations, and results.
-
----
-
-## References
-
-- **Project Instructions**: [Assignment Description](#)
-- **Homography Theory**: [Multiple View Geometry by Hartley and Zisserman](https://www.amazon.com/Multiple-View-Geometry-Computer-Vision/dp/0521540518)
-- **Image Processing Libraries**:
-  - [OpenCV](https://opencv.org/)
-  - [NumPy](https://numpy.org/)
-  - [SciPy](https://scipy.org/)
-  - [Matplotlib](https://matplotlib.org/)
 
