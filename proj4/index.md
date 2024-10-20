@@ -63,7 +63,7 @@ Using the four corner points of an object, I can perform image rectification now
 
 ## Part 5: Blend the images into a mosaic
 
-I blended the images into a mosaic using a one-shot warping procedure. I leave image 1 unwarped and wraped image 2 into its projection using the homography matrix H which computed between corresponding points in image 1 and image 2. First, I determined the size of the final mosaic by transforming the corners of both images and calculating the necessary offsets to accommodate the warped images within the bounding box. I also created an alpha mask that starts with a value of 1 at the center of each image and falls off linearly to 0 at the edges to blend the two images together.
+I blended the images into a mosaic using a one-shot warping procedure. I leave image 1 unwarped and wraped image 2 into its projection using the homography matrix H which computed between corresponding points in image 1 and image 2. First, I determined the size of the final mosaic by transforming the corners of both images and calculating the necessary offsets to accommodate the warped images within the bounding box. I also created an alpha mask using distance transform to blend the two images together.
 
 ### Results
 
