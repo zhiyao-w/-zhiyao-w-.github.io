@@ -23,9 +23,6 @@ Here is the picture I shoot and used in this project:
 </p>
 
 
-
----
-
 ## Part 2: Recovering Homographies
 
 To align multiple images into a single mosaic, it is crucial to determine the homographic transformations between them. A homography maps points from one image to another, enabling the warping and alignment necessary for mosaicing.
@@ -41,13 +38,11 @@ To align multiple images into a single mosaic, it is crucial to determine the ho
 </p>
 For this system to not be underdetermined, we require at least 4 correspondences between the two images. Then we can solve for an approximate solution given an overconstrained system using least squares.
 
----
 
 ## Part 3: Warping the Images
 
 To warp the images using the computed homography H, I used inverse warping. First, I transformed the four corners of the input image using H to determine the bounding box dimensions for the warped image. Then, I generated a grid of output coordinates within this bounding box and mapped these coordinates back to the input image using the inverse homography (H_inv). I tried to use scipy.interpolate.griddata first but it takes too long to process since my images are quite big. So I applied linear interpolation using the map_coordinates function from scipy.ndimage by looping over color channel.
 
----
 
 ## Part 4: Image Rectification
 
@@ -59,7 +54,6 @@ Using the four corner points of an object, I can perform image rectification now
 
 ![Rectification](2.png)
 
----
 
 ## Part 5: Blend the images into a mosaic
 
