@@ -1,4 +1,4 @@
-# Project: Image Warping and Mosaicing
+# Project 4A: Image Warping and Mosaicing
 Zhiyao Wang
 
 The project explores various aspects of image warping, including homography computation, image rectification, and the creation of  image mosaics through projective transformations and blending techniques.
@@ -87,5 +87,80 @@ set 3:
   <img src="7.png" alt="mosaic" width="60%" />
   <img src="8.png" alt="mosaic" width="25%" />
 </p>
+
+---
+
+# Project 4B: FEATURE MATCHING for AUTOSTITCHING
+
+This project aims to create a system for automatically stitching images into a seamless mosaic.
+The main steps involved in this project include:
+
+1. Detecting corner features in an image.
+2. Extracting a feature descriptor for each feature point.
+3. Matching these feature descriptors between two images.
+4. Computing a robust homography using RANSAC.
+5. Creating a mosaic by stitching images using the computed homography.
+
+---
+
+## Step 1: Detecting Corner Features
+
+I started by detecting corner features using the Harris Interest Point Detector. The goal is to identify points that have distinct local intensity changes in multiple directions, making them ideal candidates for feature matching. Using the pre-implemented version of the Harris corner detector, I got the result shown below.
+
+Result:
+
+
+
+## Step 2: Adaptive Non-Maximal Suppression (ANMS)
+
+To ensure a well-distributed set of interest points across the image, we implemented Adaptive Non-Maximal Suppression (ANMS). ANMS allows us to reduce the number of detected corner features while ensuring spatial diversity.
+
+The implementation was based on sorting features by their strength and retaining those that were spatially well distributed, ensuring a robust selection of features for the matching process.
+
+- **Result Image**: The image below shows the ANMS-selected corners (blue dots) overlaid on `img1`.
+
+
+
+## Step 3: Extracting Feature Descriptors
+
+We extracted feature descriptors for each corner using an 8x8 sampling of bias/gain-normalized intensity values from a larger 40x40 window around each key point, as described in the paper by Brown et al. This step is crucial for ensuring that the features are robust to small changes in intensity or noise.
+
+The feature descriptor extraction used low-frequency sampling to make the descriptors more robust to errors in interest point location.
+
+- **Result Image**: Below are some of the extracted 8x8 feature descriptors from `img1`.
+
+
+
+## Step 4: Feature Matching
+
+The next step was to match the feature descriptors between two images. We used Lowe's ratio test to find pairs of features that look similar and are likely to be a good match. This was implemented by finding the two nearest neighbors in the feature descriptor space and keeping only those matches where the ratio of the closest to the second closest match was below a threshold.
+
+- **Result Image**: Below is the visualization of matched features between `img1` and `img2`.
+
+
+
+## Step 5: Computing Homography using RANSAC
+
+To align the images, we computed a homography using the RANSAC algorithm. RANSAC allows us to estimate a transformation model (homography) while rejecting outliers in the matches.
+
+The RANSAC loop was performed by randomly selecting four feature pairs, computing the homography, and retaining the homography with the largest set of inliers. This step allowed us to compute a robust transformation between the two images.
+
+- **Result Image**: Below is the visualization of inlier matches after running RANSAC.
+
+
+
+## Step 6: Creating the Mosaic
+
+Finally, we used the computed homography to stitch the images together and create a mosaic. We used image warping to align `img2` to `img1` and blend them together to form the final result.
+
+- **Result Image**: Below is the final stitched mosaic of `img1` and `img2`.
+
+
+
+---
+
+## What I Learned
+
+One of the coolest things I learned from this project is the power of feature matching and homography in transforming multiple images into a seamless mosaic. It was fascinating to see how detecting good feature points, extracting robust descriptors, and applying RANSAC to eliminate outliers can produce high-quality image stitching results. This project also helped me appreciate the challenges in ensuring spatial consistency and dealing with overlapping regions in image mosaicking.
 
 
