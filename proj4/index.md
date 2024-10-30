@@ -193,6 +193,4 @@ set 3:
 
 ## What I Learned
 
-One of the coolest things I learned from this project is the power of feature matching and homography in transforming multiple images into a seamless mosaic. It was fascinating to see how detecting good feature points, extracting robust descriptors, and applying RANSAC to eliminate outliers can produce high-quality image stitching results. This project also helped me appreciate the challenges in ensuring spatial consistency and dealing with overlapping regions in image mosaicking.
-
-
+The coolest thing I learned from this project is automatically stitching images. I was surprised that only after a few steps, it can automatically select the matched points from a large image and stitch the image perfectly. This saves a huge amount of time compared to doing it manually.
