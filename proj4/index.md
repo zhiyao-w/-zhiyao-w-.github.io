@@ -103,49 +103,70 @@ The main steps involved in this project include:
 
 ---
 
-## Step 1: Detecting Corner Features
+## Detecting Corner Features
 
 I started by detecting corner features using the Harris Interest Point Detector. The goal is to identify points that have distinct local intensity changes in multiple directions, making them ideal candidates for feature matching. Using the pre-implemented version of the Harris corner detector, I got the result shown below.
 
 Result:
+</p>
+<p align="center">
+  <img src="b1.png" alt="image" width="40%" />
+  <img src="b2.png" alt="image" width="40%" />
+</p>
 
 
+## Adaptive Non-Maximal Suppression (ANMS)
 
-## Step 2: Adaptive Non-Maximal Suppression (ANMS)
+Then I implemented the ANMS method to reduce the number of potential keypoints by calculating the distance between every pair of points, and computing the suppresion radius for each feature, which is the distance to the nearest feature that's stronger. Then we sort and select the top n features. See the before/after ANMS comparison below.
 
-To ensure a well-distributed set of interest points across the image, we implemented Adaptive Non-Maximal Suppression (ANMS). ANMS allows us to reduce the number of detected corner features while ensuring spatial diversity.
-
-The implementation was based on sorting features by their strength and retaining those that were spatially well distributed, ensuring a robust selection of features for the matching process.
-
-- **Result Image**: The image below shows the ANMS-selected corners (blue dots) overlaid on `img1`.
-
-
-
-## Step 3: Extracting Feature Descriptors
-
-We extracted feature descriptors for each corner using an 8x8 sampling of bias/gain-normalized intensity values from a larger 40x40 window around each key point, as described in the paper by Brown et al. This step is crucial for ensuring that the features are robust to small changes in intensity or noise.
-
-The feature descriptor extraction used low-frequency sampling to make the descriptors more robust to errors in interest point location.
-
-- **Result Image**: Below are some of the extracted 8x8 feature descriptors from `img1`.
+Result:
+</p>
+<p align="center">
+  <img src="b2.png" alt="image" width="40%" />
+  <img src="b3.png" alt="image" width="40%" />
+</p>
 
 
+## Extracting Feature Descriptors
 
-## Step 4: Feature Matching
+extract 40x40 patches around each corner returned by ANMS, and then downsample to get 8x8 feature patches. After bias/gain normalization,
+I extracted 40x40 patches around each point and then downsample and bias/gain-normalized to get 8x8 feature patches. See some samples of the 8x8 feature patches below.
 
-The next step was to match the feature descriptors between two images. We used Lowe's ratio test to find pairs of features that look similar and are likely to be a good match. This was implemented by finding the two nearest neighbors in the feature descriptor space and keeping only those matches where the ratio of the closest to the second closest match was below a threshold.
+Result:
+</p>
+<p align="center">
+  <img src="b4.png" alt="image" />
+</p>
 
-- **Result Image**: Below is the visualization of matched features between `img1` and `img2`.
+
+## Feature Matching
+
+The next step was to match the feature descriptors between two images. I used Lowe's ratio test to find pairs of features that look similar and are likely to be a good match. This was implemented by finding the two nearest neighbors in the feature descriptor space and keeping only those matches where the 1-NN/2-NN ratio was below a threshold. I got the matching result below.
+
+Result:
+</p>
+<p align="center">
+  <img src="b5.png" alt="image" />
+</p>
+
+Some matching patches:
+</p>
+<p align="center">
+  <img src="b6.png" alt="image" />
+</p>
 
 
-
-## Step 5: Computing Homography using RANSAC
+## Computing Homography using RANSAC
 
 To align the images, we computed a homography using the RANSAC algorithm. RANSAC allows us to estimate a transformation model (homography) while rejecting outliers in the matches.
 
 The RANSAC loop was performed by randomly selecting four feature pairs, computing the homography, and retaining the homography with the largest set of inliers. This step allowed us to compute a robust transformation between the two images.
 
-- **Result Image**: Below is the visualization of inlier matches after running RANSAC.
+Result:
+</p>
+<p align="center">
+  <img src="b7.png" alt="image" />
+</p>
 
 
 
