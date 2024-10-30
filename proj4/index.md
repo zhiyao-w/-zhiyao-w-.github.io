@@ -165,8 +165,9 @@ Result:
 set 1:
 </p>
 <p align="center">
-  <img src="b8.png" alt="mosaic" width="60%" />
-  <img src="b9.png" alt="mosaic" width="60%" />
+  <img src="4.png" alt="mosaic" width="49%" />
+  <img src="b9.png" alt="mosaic" width="49%" />
+  The manual (left) and auto (right) mosaics.
 </p>
 
 set 2:
