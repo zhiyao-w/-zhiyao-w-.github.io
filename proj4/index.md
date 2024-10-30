@@ -156,11 +156,9 @@ Some matching patches:
 </p>
 
 
-## Computing Homography using RANSAC
+## RANSAC
 
-To align the images, we computed a homography using the RANSAC algorithm. RANSAC allows us to estimate a transformation model (homography) while rejecting outliers in the matches.
-
-The RANSAC loop was performed by randomly selecting four feature pairs, computing the homography, and retaining the homography with the largest set of inliers. This step allowed us to compute a robust transformation between the two images.
+Now use the RANSAC algorithm to do further robustification. RANSAC was performed by randomly selecting four feature pairs, computing the homography, and retaining the homography with the largest set of inliers. So I can further filter out “outlier”. Below is the result after using RANSAC.  
 
 Result:
 </p>
@@ -169,14 +167,27 @@ Result:
 </p>
 
 
+## Final Results
+set 1:
+</p>
+<p align="center">
+  <img src="b8.png" alt="mosaic" width="60%" />
+  <img src="b9.png" alt="mosaic" width="60%" />
+</p>
 
-## Step 6: Creating the Mosaic
+set 2:
+</p>
+<p align="center">
+  <img src="5.png" alt="mosaic" width="60%" />
+  <img src="6.png" alt="mosaic" width="60%" />
+</p>
 
-Finally, we used the computed homography to stitch the images together and create a mosaic. We used image warping to align `img2` to `img1` and blend them together to form the final result.
-
-- **Result Image**: Below is the final stitched mosaic of `img1` and `img2`.
-
-
+set 3:
+</p>
+<p align="center">
+  <img src="7.png" alt="mosaic" width="60%" />
+  <img src="8.png" alt="mosaic" width="25%" />
+</p>
 
 ---
 
