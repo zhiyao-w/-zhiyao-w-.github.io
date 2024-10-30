@@ -173,6 +173,10 @@ set 1:
 set 2:
 </p>
 <p align="center">
+  <img src="b10.png" alt="mosaic"/>
+</p>
+</p>
+<p align="center">
   <img src="6.png" alt="mosaic" width="49%" />
   <img src="b11.png" alt="mosaic" width="49%" />
   The manual (left) and auto (right) mosaics.
@@ -181,8 +185,16 @@ set 2:
 set 3:
 </p>
 <p align="center">
-  <img src="8.png" alt="mosaic" width="40%" />
-  <img src="8.png" alt="mosaic" width="40%" />
+  <img src="b12.png" alt="mosaic" width="80%" />
+</p>
+</p>
+<p align="center">
+  <img src="8.png" alt="mosaic" width="36%" />
+  <img src="b13.png" alt="mosaic" width="40%" />
+</p>
+</p>
+<p align="center">
+The manual (left) and auto (right) mosaics.
 </p>
 
 ---
