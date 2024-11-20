@@ -275,9 +275,7 @@ Here is a visualization of the noising process using $\sigma = [0.0, 0.2, 0.4, 0
 
 ### 1.2.1 Training
 Now it's time to train the model!
-
 #### Parameters:
-
 Batch size: 256
 
 Number of epochs: 5
@@ -285,49 +283,88 @@ Number of epochs: 5
 Optimizer: Adam with learning rate of 1e-4
 
 Hidden Dimensions = 128
-
 #### Traning loss curve:
 <p align="center">
   <img src="41.png" alt="Traning loss curve" width="70%" />
 </p>
 
-
-
+#### Results after the 1st and 5th epoch:
+<p align="center">
+  <img src="42.png" alt="Traning loss curve" width="45%" />
+  <img src="43.png" alt="Traning loss curve" width="45%" />
+</p>
 
 ### 1.2.2 Out-of-Distribution Testing
-- **Objective**: Evaluate the trained denoiser on noise levels it wasn't trained for.
-
----
+#### Results on the test set with out-of-distribution noise levels
+<p align="center">
+  <img src="44.png" alt="Traning loss curve" width="100%" />
+</p>
 
 ## Part 2: Training a Diffusion Model
+In this part, we will train a UNet model that can iteratively denoise an image.
 ### 2.1 Adding Time Conditioning to UNet
-- **Objective**: Condition the UNet on time step `t` to control the amount of noise during denoising.
+Updated UNet architecture with time-conditioning:
+<p align="center">
+  <img src="45.png" alt="Time-conditioning" width="100%" />
+</p>
 
-### 2.2 Training the Time-Conditioned UNet
-- **Objective**: Train the time-conditioned UNet to iteratively denoise images.
-- **Results**: Visualized the loss curve over the training process and generated samples at different epochs.
+### 2.2 Training the UNet
+We pick a random image from the training set, a random $t$, and train the denoiser to predict the noise in $x_t$. We repeat this for different images and different values until the model converges.
+Updated UNet architecture with time-conditioning:
+<p align="center">
+  <img src="46.png" alt="Algorithm" width="60%" />
+</p>
+
+#### Parameters:
+Batch size: 128
+
+Number of epochs: 20
+
+Optimizer: Adam with initial learning rate of 1e-3 and exponential learning rate decay scheduler with gamma = $0.1^{(1.0 / \mathrm{num\_epochs})}$
+
+Hidden Dimensions: 64
+#### Traning loss curve:
+<p align="center">
+  <img src="47.png" alt="Traning loss curve" width="70%" />
+</p>
 
 ### 2.3 Sampling from the UNet
-- **Deliverables**: Visualized the generated results at different epochs (`1`, `5`, `10`, `15`, `20`).
-
+#### Algoritnm:
 <p align="center">
-  <img src="sample_epoch_1.png" alt="Generated Samples after 1 Epoch" width="30%" />
-  <img src="sample_epoch_20.png" alt="Generated Samples after 20 Epochs" width="30%" />
+  <img src="48.png" alt="Algoritnm" width="60%" />
+</p>
+
+#### Sampling results for the time-conditioned UNet after training epochs 1, 5, 10, 15, and 20.
+<p align="center">
+  <img src="49.png" alt="Samples" width="60%" />
+  <img src="50.png" alt="Samples" width="60%" />
+  <img src="51.png" alt="Samples" width="60%" />
+  <img src="52.png" alt="Samples" width="60%" />
+  <img src="53.png" alt="Samples" width="60%" />  
 </p>
 
 ### 2.4 Adding Class-Conditioning to UNet
-- **Objective**: Condition the UNet on digit classes (0-9) using class-conditioned guidance for improved control.
-- **Training Loss Curve**: Visualized the class-conditioned UNet training loss curve.
-
-### 2.5 Sampling from the Class-Conditioned UNet
-- **Objective**: Use classifier-free guidance with `w=7.5` to generate digit-specific images.
-- **Deliverables**: Generated four instances of each digit at different epochs.
-
+To have more control for image generation, we add a class condition on UNet: digit classes (0-9). We need to add 2 more FCBlocks to our UNet. Since we still want the model to generate without the class condition, implement a dropout rate of 0.1 of the time and drop the class conditioning by setting it to 0.
 <p align="center">
-  <img src="digit_samples.png" alt="Class-Conditioned Samples" width="60%" />
+  <img src="54.png" alt="Algoritnm" width="60%" />
 </p>
 
----
+#### Traning loss curve:
+<p align="center">
+  <img src="55.png" alt="Traning loss curve" width="70%" />
+</p>
 
-## What I Learned
-This project provided a deep understanding of diffusion models, their power in generating images, and the nuances of training them from scratch. Implementing tasks such as visual anagrams and hybrid images were particularly interesting, as they demonstrated the creative potential of diffusion models.
+### 2.5 Sampling from the Class-Conditioned UNet
+#### Algoritnm:
+<p align="center">
+  <img src="56.png" alt="Algoritnm" width="60%" />
+</p>
+
+#### Sampling results for the class-conditioned UNet after training epochs 1, 5, 10, 15, and 20.:
+<p align="center">
+  <img src="57.png" alt="Samples" width="60%" />
+  <img src="58.png" alt="Samples" width="60%" />
+  <img src="59.png" alt="Samples" width="60%" />
+  <img src="60.png" alt="Samples" width="60%" />
+  <img src="61.png" alt="Samples" width="60%" />  
+</p>
