@@ -310,7 +310,7 @@ Updated UNet architecture with time-conditioning:
 
 ### 2.2 Training the UNet
 We pick a random image from the training set, a random $t$, and train the denoiser to predict the noise in $x_t$. We repeat this for different images and different values until the model converges.
-Updated UNet architecture with time-conditioning:
+#### Training algoritnm:
 <p align="center">
   <img src="46.png" alt="Algorithm" width="60%" />
 </p>
@@ -329,7 +329,7 @@ Hidden Dimensions: 64
 </p>
 
 ### 2.3 Sampling from the UNet
-#### Algoritnm:
+#### Sampling algoritnm:
 <p align="center">
   <img src="48.png" alt="Algoritnm" width="60%" />
 </p>
@@ -345,6 +345,7 @@ Hidden Dimensions: 64
 
 ### 2.4 Adding Class-Conditioning to UNet
 To have more control for image generation, we add a class condition on UNet: digit classes (0-9). We need to add 2 more FCBlocks to our UNet. Since we still want the model to generate without the class condition, implement a dropout rate of 0.1 of the time and drop the class conditioning by setting it to 0.
+#### Training algoritnm
 <p align="center">
   <img src="54.png" alt="Algoritnm" width="60%" />
 </p>
@@ -355,7 +356,7 @@ To have more control for image generation, we add a class condition on UNet: dig
 </p>
 
 ### 2.5 Sampling from the Class-Conditioned UNet
-#### Algoritnm:
+#### Sampling algoritnm:
 <p align="center">
   <img src="56.png" alt="Algoritnm" width="60%" />
 </p>
