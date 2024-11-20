@@ -28,13 +28,15 @@ We can see that the quality of the outputs improves as the inference steps incre
 ## Part 1: Sampling Loops
 ### 1.1 Implementing the Forward Process
 I implement the forward process for adding noise to a clean image, and generates noisy images of the Campanile at different levels (t=250, t=500, and t=750).
+
 The forward process is defined by:
 
-![Equation 1](https://latex.codecogs.com/png.latex?q(x_t%20|%20x_0)%20=%20%5Cmathcal%7BN%7D%5Cleft(x_t%3B%20%5Csqrt%7B%5Cbar%7B%5Calpha%7D_t%7D%20x_0%2C%20(1%20-%20%5Cbar%7B%5Calpha%7D_t)%20%5Cmathbf%7BI%7D%5Cright%29)
+![Equation 1][(https://latex.codecogs.com/png.latex?q(x_t%20%7C%20x_0)%20%3D%20%5Cmathcal%7BN%7D%5Cleft(x_t%3B%20%5Csqrt%7B%5Cbar%7B%5Calpha%7D_t%7D%20x_0%2C%20(1%20-%20%5Cbar%7B%5Calpha%7D_t%29%20%5Cmathbf%7BI%7D%5Cright))]
 
 which is equivalent to:
 
-![Equation 2](https://latex.codecogs.com/png.latex?x_t%20=%20%5Csqrt%7B%5Cbar%7B%5Calpha%7D_t%7D%20x_0%20+%20%5Csqrt%7B1%20-%20%5Cbar%7B%5Calpha%7D_t%7D%20%5Cepsilon%2C%20%5Cquad%20%5Ctext%7Bwhere%7D%20%5Cquad%20%5Cepsilon%20%5Csim%20%5Cmathcal%7BN%7D(0%2C%201))
+![Equation 2](https://latex.codecogs.com/png.latex?x_t%20%3D%20%5Csqrt%7B%5Cbar%7B%5Calpha%7D_t%7D%20x_0%20%2B%20%5Csqrt%7B1%20-%20%5Cbar%7B%5Calpha%7D_t%7D%20%5Cepsilon%2C%20%5Cquad%20%5Ctext%7Bwhere%7D%20%5Cquad%20%5Cepsilon%20%5Csim%20%5Cmathcal%7BN%7D(0%2C%201))
+
 <p align="center">
   <img src="4.png" alt="Noisy Campanile" width="50%" />
 </p>
